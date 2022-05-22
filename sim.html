@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simulador de robot</title>
+  </head>
+  <body>
+  <h2>Simulador de robot</h2>
+  <b>Identificador:</b> <input type="text" size="20" id="robotId" /><br />
+  <b>Nombre:</b> <input type="text" size="20" id="robotName" /><br />
+  <b>Sensor de temperatura:</b><br />
+  <div style="margin-left: 20px">Habilitar: <input type="checkbox" checked id="tempEnable" /></div>
+  <div style="margin-left: 20px">Valor: <input type="text" size="6" value="28" id="tempVal" />  °C</div>
+  <div style="margin-left: 20px"> Añadir ruido:<input type="checkbox" id="tempNoise" /></div>
+  <b>Sensor de presión:</b><br />
+  <div style="margin-left: 20px">Habilitar: <input type="checkbox" checked id="presEnable" /></div>
+  <div style="margin-left: 20px">Valor: <input type="text" size="6" value="1016" id="presVal" /> hPA</div>
+  <div style="margin-left: 20px"> Añadir ruido:<input type="checkbox" id="presNoise" /></div>
+  <b>Sensor de humedad:</b><br />
+  <div style="margin-left: 20px">Habilitar: <input type="checkbox" checked id="humEnable" /></div>
+  <div style="margin-left: 20px">Valor: <input type="range" min="0" max="100" step=".1" size="6" value="66" oninput="this.nextElementSibling.value = this.value + '%'" id="humVal" />
+  <output>66%</output></div>
+  <div style="margin-left: 20px"> Añadir ruido:<input type="checkbox" id="humNoise" /></div>
+  <b style="float: left">Posición:</b> <div id="coord">(0, 0)</div>
+  <div style="margin-left: 40px"><button type="button" id="posUp">↑</button></div>
+  <div style="margin-left: 20px; float: left"><button type="button" id="posLeft">←</button></div>
+  <div style="margin-left: 60px"><button type="button" id="posRight">→</button></div>
+  <div style="margin-left: 40px"><button type="button" id="posDown">↓</button></div>
+  <b style="float: left">Intervalo de tiempo:</b>
+  <div style="margin-left: 20px"><input type="range" min="500" max="5000" step="1" size="6" value="500" id="timeInterval" oninput="this.nextElementSibling.value = this.value + ' ms'" />
+  <output>500 ms</output></div>
+
+  <button id="connect">Conectar robot</button>
+  <script src="https://unpkg.com/mqtt@4.0.1/dist/mqtt.js"></script>
+  <script>
+    const MQTT_options = {
+  clean: true,
+  connectionTimeout: 4000,
+  clientId: 'web2',
+  username: 'david',
+  password: 'brightside99',
+};
+
+    robotId = "";
+    robotPos = {'x': 0, 'y': 0};
+    robotTemp = 0;
+    robotHum = 0;
+    robotPres = 0;
+    robotName = ";"
+    const client = mqtt.connect("mqtt://192.168.100.20:1800", MQTT_options);
+    client.on('connect', function() {
+        console.log('Connected to MQTT');
+    });
+
+    function updateValues() {
+      if(document.getElementById("tempEnable").checked) {
+        robotTemp = parseFloat(document.getElementById("tempVal").value);
+        robotTemp += parseFloat((document.getElementById("tempNoise").checked) ? (Math.random() * 2 - 1).toFixed(1) : 0);
+      }
+      
+      if(document.getElementById("humEnable").checked) {
+        robotHum = parseFloat(document.getElementById("humVal").value);
+        robotHum += parseFloat((document.getElementById("humNoise").checked) ? (Math.random() * 2 - 1).toFixed(1) : 0);
+      }
+
+      if(document.getElementById("presEnable").checked) {
+        robotPres = parseFloat(document.getElementById("presVal").value);
+        robotPres += parseFloat((document.getElementById("presNoise").checked) ? (Math.random() * 2 - 1).toFixed(1) : 0);
+      }
+    }
+
+    function sendUpdate() {
+      updateValues();
+
+      msjObj = {pos: {'x': robotPos.x, 'y': robotPos.y}};
+
+      if(document.getElementById("tempEnable").checked) {
+        msjObj.temp = robotTemp;
+      }
+
+      if(document.getElementById("humEnable").checked) {
+        msjObj.hum = robotHum;
+      }
+
+      if(document.getElementById("presEnable").checked) {
+        msjObj.pres = robotPres;
+      }
+      client.publish('/robot/' + robotId, JSON.stringify(msjObj));
+
+      setTimeout(sendUpdate, document.getElementById("timeInterval").value);
+    }
+
+    document.getElementById("connect").addEventListener('click', function() {     
+      robotId =  document.getElementById("robotId").value;
+      robotName =  document.getElementById("robotName").value;
+
+      updateValues();
+      msjObj = {'id': robotId, 'name': robotName, 
+        pos: {'x': robotPos.x, 'y': robotPos.y}};
+      if(document.getElementById("tempEnable").checked) {
+        msjObj.temp = robotTemp;
+      }
+
+      if(document.getElementById("humEnable").checked) {
+        msjObj.hum = robotHum;
+      }
+
+      if(document.getElementById("presEnable").checked) {
+        msjObj.pres = robotPres;
+      }
+
+      client.publish('/announce', JSON.stringify(msjObj));
+
+      document.getElementById("tempEnable").disabled = true;
+      document.getElementById("humEnable").disabled = true;
+      document.getElementById("presEnable").disabled = true;
+      document.getElementById("tempNoise").disabled = true;
+      document.getElementById("humNoise").disabled = true;
+      document.getElementById("presNoise").disabled = true;
+      document.getElementById("connect").disabled = true;
+      document.getElementById("robotId").disabled = true;
+      document.getElementById("robotName").disabled = true;
+
+      setTimeout(sendUpdate, document.getElementById("timeInterval").value);
+    });
+
+    function updatePos() {
+      document.getElementById("coord").innerHTML = "(" + robotPos.x +", " + robotPos.y + ")";
+    }
+
+    document.getElementById("posUp").addEventListener('click', function() {
+      if(robotPos.y > 0) robotPos.y -= 1;
+      updatePos();
+    });
+
+    document.getElementById("posDown").addEventListener('click', function() {
+      if(robotPos.y < 15) robotPos.y += 1;
+      updatePos();
+    });
+
+    document.getElementById("posLeft").addEventListener('click', function() {
+      if(robotPos.x > 0) robotPos.x -= 1;
+      updatePos();
+    });
+
+    document.getElementById("posRight").addEventListener('click', function() {
+      if(robotPos.x < 18) robotPos.x += 1;
+      updatePos();
+    });
+
+  </script>
+  </body>
+</html>

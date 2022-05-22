@@ -1,0 +1,42 @@
+#tileMap {
+  border: 1px solid black;
+  z-index: 0;
+}
+#drawing {
+  background-image: url('room.png');
+  z-index: 1;
+}
+
+.tileBox {
+  width: 654px;
+  height: 471px;
+  position: absolute;
+}
+
+.leftContainer {
+  width: 654px;
+  height: 471px;
+  background-color: #d7eef6;
+  border: 1px solid #266d85;
+  padding: 15px;
+  position: relative;
+  float: left;
+}
+
+.rightContainer {
+  width: 280px;
+  background-color: #d7eef6;
+  border: 1px solid #266d85;
+  float: right;
+  padding: 8px;
+}
+
+.main {
+  width: 1000px;
+  position: relative;
+  margin-left: calc(50% - 500px);
+}
+
+#showPress #showHum #showPos #showTemp {
+  display:inline;
+}

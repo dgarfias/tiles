@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mapa cuadrado</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <center>
+    <h2>Interfaz de comunicación</h2>
+  </center>
+    <div class="main">
+      <div class="leftContainer">
+        <canvas id="tileMap" class="tileBox"></canvas>
+        <div id="drawing" class="tileBox"></div>
+      </div>
+      <div class="rightContainer">
+        <select name="robotSel" id="robotSel" disabled="true">
+          <option>No existen robots</option>
+        </select>
+        <div id="robotData">
+        </div>
+      </div>
+    </div>
+    <script src="https://unpkg.com/mqtt@4.0.1/dist/mqtt.js"></script>
+    <script src="tilemap.js"></script>
+    
+  </body>
+</html>
