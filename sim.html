@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Simulador de robot</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
   </head>
   <body>
   <h2>Simulador de robot</h2>
@@ -26,7 +27,7 @@
   <div style="margin-left: 60px"><button type="button" id="posRight">→</button></div>
   <div style="margin-left: 40px"><button type="button" id="posDown">↓</button></div>
   <b style="float: left">Intervalo de tiempo:</b>
-  <div style="margin-left: 20px"><input type="range" min="500" max="5000" step="1" size="6" value="500" id="timeInterval" oninput="this.nextElementSibling.value = this.value + ' ms'" />
+  <div style="margin-left: 20px"><input type="range" min="100" max="5000" step="1" size="6" value="100" id="timeInterval" oninput="this.nextElementSibling.value = this.value + ' ms'" />
   <output>500 ms</output></div>
 
   <button id="connect">Conectar robot</button>
@@ -46,7 +47,7 @@
     robotHum = 0;
     robotPres = 0;
     robotName = ";"
-    const client = mqtt.connect("mqtt://192.168.100.20:1800", MQTT_options);
+    const client = mqtt.connect("mqtt://127.0.0.1:1800", MQTT_options);
     client.on('connect', function() {
         console.log('Connected to MQTT');
     });
@@ -71,7 +72,7 @@
     function sendUpdate() {
       updateValues();
 
-      msjObj = {pos: {'x': robotPos.x, 'y': robotPos.y}};
+      msjObj = {posmet: {'x': robotPos.x, 'y': robotPos.y}};
 
       if(document.getElementById("tempEnable").checked) {
         msjObj.temp = robotTemp;
@@ -95,7 +96,7 @@
 
       updateValues();
       msjObj = {'id': robotId, 'name': robotName, 
-        pos: {'x': robotPos.x, 'y': robotPos.y}};
+        posmet: {'x': robotPos.x, 'y': robotPos.y}};
       if(document.getElementById("tempEnable").checked) {
         msjObj.temp = robotTemp;
       }
@@ -128,22 +129,25 @@
     }
 
     document.getElementById("posUp").addEventListener('click', function() {
-      if(robotPos.y > 0) robotPos.y -= 1;
+      if(robotPos.y > 0) robotPos.y -= 0.1;
+      else robotPos.y = 0;
       updatePos();
     });
 
     document.getElementById("posDown").addEventListener('click', function() {
-      if(robotPos.y < 15) robotPos.y += 1;
+      if(robotPos.y < 16) robotPos.y += 0.1;
       updatePos();
     });
 
     document.getElementById("posLeft").addEventListener('click', function() {
-      if(robotPos.x > 0) robotPos.x -= 1;
+      if(robotPos.x > 0) robotPos.x -= 0.1;
+      else robotPos.x = 0;
       updatePos();
     });
 
     document.getElementById("posRight").addEventListener('click', function() {
-      if(robotPos.x < 18) robotPos.x += 1;
+      if(robotPos.x < 10) robotPos.x += 0.1;
+      else robotPos
       updatePos();
     });
 

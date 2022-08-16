@@ -3,15 +3,15 @@
   <head>
     <title>Mapa cuadrado</title>
     <link rel="stylesheet" href="style.css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
   </head>
   <body>
-    <center>
-    <h2>Interfaz de comunicación</h2>
-  </center>
     <div class="main">
-      <div class="leftContainer">
-        <canvas id="tileMap" class="tileBox"></canvas>
-        <div id="drawing" class="tileBox"></div>
+      <div class="leftMapContainer">
+        <canvas id="tileMap" class="tileBox" width="500" height="800"></canvas>
+      </div>
+      <div class="leftRoomContainer">
+        <canvas id="tileRoom" class="tileRoom" width="700" height="700"></canvas>
       </div>
       <div class="rightContainer">
         <select name="robotSel" id="robotSel" disabled="true">
@@ -19,7 +19,18 @@
         </select>
         <div id="robotData">
         </div>
-      </div>
+        <div class="roomSelect">
+          <div class="roomButton" id="hab4">Hab 4</div>
+          <div class="roomButton" id="hab1">Hab 1</div><br />
+          <div class="roomButton" id="hab5">Hab 5</div>
+          <div class="roomButton" id="hab2">Hab 2</div><br />
+          <div class="roomButton" id="hab6">Hab 6</div>
+          <div class="roomButton" id="hab3">Hab 3</div><br />
+          <div class="roomButton" id="enf">Enfermeros</div>
+          <div class="roomButton" id="alm">Almacén</div><br />
+          <div class="roomButton" id="gen">Vista general</div>
+        </div>
+      </div> 
     </div>
     <script src="https://unpkg.com/mqtt@4.0.1/dist/mqtt.js"></script>
     <script src="tilemap.js"></script>

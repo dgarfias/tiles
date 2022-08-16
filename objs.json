@@ -1,0 +1,137 @@
+[
+  { "name": "doorSwingRight",
+    "size": {
+      "width": 4,
+      "height": 4 
+    },
+    "image": "objimgs/swingright.png",
+    "through": true,
+    "general": true 
+  },
+  { "name": "doorSwingLeft",
+    "size": {
+      "width": 4,
+      "height": 4   
+    },
+    "image": "objimgs/swingleft.png",
+    "through": true,
+    "general": true 
+  },
+  { "name": "doorSwingLeftTop",
+    "size": {
+      "width": 4,
+      "height": 4   
+    },
+    "image": "objimgs/swinglefttop.png",
+    "through": true,
+    "general": true 
+  },
+  { "name": "bedLeft",
+  "size": {
+    "width": 8, 
+    "height": 4   
+  },
+  "image": "objimgs/bedleft.png",
+  "through": false,
+  "general": false
+  },
+  { "name": "bedTop",
+    "size": {
+    "width": 4,
+    "height": 8   
+    },
+   "image": "objimgs/bedtop.png",
+   "through": false,
+   "general": false
+  },
+  { "name": "drawer",
+  "size": {
+    "width": 3,
+    "height": 3   
+  },
+  "image": "objimgs/drawer.png",
+  "through": false,
+  "general": false
+  },
+  { "name": "drawerLeft",
+  "size": {
+    "width": 3,
+    "height": 3   
+  },
+  "image": "objimgs/drawerLeft.png",
+  "through": false,
+  "general": false
+  },
+  { "name": "sofaLeft",
+  "size": {
+    "width": 4,
+    "height": 4   
+  },
+  "image": "objimgs/sofaleft.png",
+  "through": false,
+  "general": false
+  },
+  { "name": "sofaRight",
+  "size": {
+    "width": 4,
+    "height": 4   
+  },
+  "image": "objimgs/sofaright.png",
+  "through": false,
+  "general": false
+  },
+  { "name": "monitorRight",
+  "size": {
+    "width": 4,
+    "height": 3
+  },
+  "image": "objimgs/monitorright.png",
+  "through": false,
+  "general": false
+  },
+  { "name": "monitorLeft",
+  "size": {
+    "width": 4,
+    "height": 3
+  },
+  "image": "objimgs/monitorleft.png",
+  "through": false,
+  "general": false
+  },
+  { "name": "sinkRight",
+  "size": {
+    "width": 2,
+    "height": 3
+  },
+  "image": "objimgs/sinkright.png",
+  "through": false,
+  "general": false
+  },
+  { "name": "sinkLeft",
+  "size": {
+    "width": 2,
+    "height": 3
+  },
+  "image": "objimgs/sinkleft.png",
+  "through": false,
+  "general": false
+  },
+  { "name": "tableLeft",
+  "size": {
+    "width": 4,
+    "height": 5
+  },
+  "image": "objimgs/tableleft.png",
+  "through": false,
+  "general": false
+  },
+  { "name": "shelf",
+  "size": {
+    "width": 15,
+    "height": 3
+  },
+  "image": "objimgs/shelf.png",
+  "through": false,
+  "general": false
+  }
+]
